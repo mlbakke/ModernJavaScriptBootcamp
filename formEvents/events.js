@@ -15,7 +15,7 @@ form.addEventListener('submit', function(e) {
 
 const formData = {};
 for (let input of [ cc, terms, veggies ]) {
-	input.addEventListener('input', ({ target }) => {
+	input.addEventListener('change', ({ target }) => {
 		const { name, type, value, checked } = target;
 		formData[name] = type === 'checkbox' ? checked : value;
 	});
