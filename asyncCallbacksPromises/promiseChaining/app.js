@@ -33,3 +33,48 @@ const fakeReq = (url) => {
 		}, 1000);
 	});
 };
+
+// Easy way to chain promises - returning promises
+// Only need one .catch
+fakeReq('/users')
+	.then((res) => {
+		const id = res.data[0].id;
+		// fakeReq('/users') -> fakeReq('/users/1')
+		return fakeReq(`/users/${id}`);
+	})
+	.then((res) => {
+		const postId = res.data.topPostId;
+		// fakeReq('/users/1') -> fakeReq('/posts/454321')
+		return fakeReq(`/posts/${postId}`);
+	})
+	.then((res) => {
+		console.log(res);
+	})
+	.catch((err) => {
+		console.log('Oh no!', err);
+	});
+
+// How not to do it, basically the promise version of 'callback hell'
+// .then within .then and then having to add .catch to each .then
+
+// fakeReq('/users')
+// 	.then((res) => {
+// 		const id = res.data[0].id;
+// 		fakeReq(`/users/${id}`)
+// 			.then((res) => {
+// 				const postId = res.data.topPostId;
+// 				fakeReq(`/posts/${postId}`)
+// 					.then((res) => {
+// 						console.log(res);
+// 					})
+// 					.catch((err) => {
+// 						console.log('Could not find post', err);
+// 					});
+// 			})
+// 			.catch((err) => {
+// 				console.log('Could not find user', err);
+// 			});
+// 	})
+// 	.catch((err) => {
+// 		console.log('OH NO!', err);
+// 	});
