@@ -9,18 +9,18 @@ class Timer {
 		this.durationInput.addEventListener('change', this.onDurationChange);
 	}
 
-	start() {
-		console.log('started');
-	}
-	pause() {
-		console.log('paused');
-	}
-	onDurationChange() {
-		console.log('duration changed');
-	}
-	tick() {
-		console.log('time is ticking');
-	}
+	start = () => {
+		console.log(this);
+	};
+	pause = () => {
+		console.log(this);
+	};
+	onDurationChange = () => {
+		console.log(this);
+	};
+	tick = () => {
+		console.log(this);
+	};
 }
 
 const duration = document.querySelector('#duration');
