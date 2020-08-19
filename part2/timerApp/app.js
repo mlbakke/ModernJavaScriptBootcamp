@@ -21,11 +21,14 @@ class Timer {
 	};
 	tick = () => {
 		const timeRemaining = this.timeRemaining;
-		if (timeRemaining > 0 && (timeRemaining.isInteger || timeRemaining > 1)) {
+		if (timeRemaining >= 1) {
+			// Count down 1s if timeRemaining >= 1
 			this.timeRemaining = timeRemaining - 1;
 		} else if (timeRemaining > 0 && timeRemaining < 1) {
+			// If timeRemaining is between 0 and 1 round down to 0
 			this.timeRemaining = parseInt(timeRemaining);
 		} else {
+			// Stop counting when timeRemaining = 0
 			this.pause();
 		}
 	};
