@@ -36,7 +36,8 @@ class Timer {
 		return parseFloat(this.durationInput.value).toFixed(2);
 	}
 	set timeRemaining(time) {
-		this.durationInput.value = time.toFixed(2);
+		//parseFloat(n.toFixed(2)) => max 2 digits, removes trailing 0
+		this.durationInput.value = parseFloat(time.toFixed(2));
 	}
 }
 
