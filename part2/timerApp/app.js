@@ -20,12 +20,21 @@ class Timer {
 		console.log(this);
 	};
 	tick = () => {
-		const time = duration.value;
-		if (time > 0) {
-			duration.value = time - 1;
+		const timeRemaining = this.timeRemaining;
+		if (timeRemaining > 0 && (timeRemaining.isInteger || timeRemaining > 1)) {
+			this.timeRemaining = timeRemaining - 1;
+		} else if (timeRemaining > 0 && timeRemaining < 1) {
+			this.timeRemaining = parseInt(timeRemaining);
+		} else {
+			this.pause();
 		}
-		return;
 	};
+	get timeRemaining() {
+		return parseFloat(this.durationInput.value).toFixed(2);
+	}
+	set timeRemaining(time) {
+		this.durationInput.value = time.toFixed(2);
+	}
 }
 
 const duration = document.querySelector('#duration');
