@@ -10,16 +10,21 @@ class Timer {
 	}
 
 	start = () => {
-		console.log(this);
+		this.tick();
+		this.interval = setInterval(this.tick, 1000);
 	};
 	pause = () => {
-		console.log(this);
+		clearInterval(this.interval);
 	};
 	onDurationChange = () => {
 		console.log(this);
 	};
 	tick = () => {
-		console.log(this);
+		const time = duration.value;
+		if (time > 0) {
+			duration.value = time - 1;
+		}
+		return;
 	};
 }
 
