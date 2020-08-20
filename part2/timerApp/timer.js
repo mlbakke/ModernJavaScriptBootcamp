@@ -16,10 +16,10 @@ class Timer {
 
 	start = () => {
 		if (this.onStart) {
-			this.onStart();
+			this.onStart(this.timeRemaining);
 		}
 		this.tick();
-		this.interval = setInterval(this.tick, 1000);
+		this.interval = setInterval(this.tick, 10);
 	};
 	pause = () => {
 		clearInterval(this.interval);
@@ -29,20 +29,12 @@ class Timer {
 	};
 	tick = () => {
 		const timeRemaining = this.timeRemaining;
-		if (timeRemaining >= 1) {
-			// Count down 1s if timeRemaining >= 1
-			this.timeRemaining = timeRemaining - 1;
+		if (timeRemaining > 0) {
+			this.timeRemaining = timeRemaining - .01;
 			if (this.onTick) {
-				this.onTick();
-			}
-		} else if (timeRemaining > 0 && timeRemaining < 1) {
-			// If timeRemaining is between 0 and 1 round down to 0
-			this.timeRemaining = parseInt(timeRemaining);
-			if (this.onTick) {
-				this.onTick();
+				this.onTick(this.timeRemaining);
 			}
 		} else {
-			// Stop counting when timeRemaining = 0
 			this.pause();
 			if (this.onComplete) {
 				this.onComplete();
@@ -54,6 +46,6 @@ class Timer {
 	}
 	set timeRemaining(time) {
 		//parseFloat(n.toFixed(2)) => max 2 digits, removes trailing 0
-		this.durationInput.value = parseFloat(time.toFixed(2));
+		this.durationInput.value = time.toFixed(2);
 	}
 }
