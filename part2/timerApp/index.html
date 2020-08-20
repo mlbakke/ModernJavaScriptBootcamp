@@ -6,6 +6,7 @@
     <title>Timer app</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 </head>
 <body>
     <svg height="400" width="400" class="svg">
@@ -15,9 +16,11 @@
         </circle>
     </svg>
 
-    <input type="number" id="duration" min="0" value="30" />
-    <button id="start">Start</button>
-    <button id="pause">Pause</button>
+    <div class="controls">
+        <input type="number" id="duration" min="0" value="30" />
+        <button id="start"><i class="fas fa-play"></i></button>
+        <button id="pause"><i class="fas fa-pause"></i></button>
+    </div>
 
     <script src="timer.js"></script>
     <script src="app.js"></script>
