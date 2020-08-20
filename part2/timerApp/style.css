@@ -10,3 +10,33 @@
     stroke: rgb(0, 121, 0);
     stroke-width: 15px;
 }
+
+.controls {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: grid;
+    grid-template-columns: 90px 90px;
+}
+
+#duration {
+    grid-row: 1/2;
+    grid-column: 1/-1;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 4rem;
+    transform: translateX(5px);
+}
+#start, 
+#pause {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    grid-row: 2/3;
+    font-size: 2.5rem;
+}
