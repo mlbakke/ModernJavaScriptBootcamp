@@ -81,5 +81,23 @@ const onMovieSelect = async (movie) => {
 		}
 	});
 
-	console.log(response.data);
+	document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+};
+
+const movieTemplate = (movieDetails) => {
+	return `
+		<article class="media">
+			<figure class="media-left">
+				<p class="image">
+					<img src="${movieDetails.Poster}">
+				</p>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1>${movieDetails.Title}</h1>
+					<h4>${movieDetails.Genre}</h4>
+					<p>${movieDetails.Plot}</p>
+				</div>
+		</article>
+	`;
 };
