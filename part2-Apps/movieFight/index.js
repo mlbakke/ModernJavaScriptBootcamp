@@ -13,16 +13,30 @@ const fetchData = async (searchTerm) => {
 	return response.data.Search;
 };
 
+// Create two autocomplete widgets, show results in dropdown
 createAutocomplete({
-	root : document.querySelector('.autocomplete')
-});
-createAutocomplete({
-	root : document.querySelector('.autocomplete-2')
-});
-createAutocomplete({
-	root : document.querySelector('.autocomplete-3')
+	root         : document.querySelector('.autocomplete'),
+	renderOption(movie) {
+		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+		return `
+			<img src="${imgSrc}">
+			${movie.Title} (${movie.Year})
+		`;
+	}
 });
 
+createAutocomplete({
+	root         : document.querySelector('.autocomplete-2'),
+	renderOption(movie) {
+		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+		return `
+			<img src="${imgSrc}">
+			${movie.Title}
+		`;
+	}
+});
+
+// When a movie is selected from dropdown menu, show movie details
 const onMovieSelect = async (movie) => {
 	const response = await axios.get('http://www.omdbapi.com/', {
 		params : {
