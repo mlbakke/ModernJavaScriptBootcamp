@@ -35,9 +35,9 @@ const onInput = async (e) => {
 		dropdown.classList.remove('is-active');
 		return;
 	}
-	//clear previous results
+	//Clear previous results
 	resultsWrap.innerHTML = '';
-	//open dropdown and add search results
+	//Open dropdown and add search results
 	dropdown.classList.add('is-active');
 	//If no results
 	if (!movies.length) {
@@ -53,15 +53,33 @@ const onInput = async (e) => {
 			<img src="${imgSrc}" class="poster">
 			${movie.Title}
 		`;
+		option.addEventListener('click', () => {
+			dropdown.classList.remove('is-active');
+			input.value = movie.Title;
+			onMovieSelect(movie);
+		});
 
 		resultsWrap.appendChild(option);
 	}
 };
 
+// Search for movies on input, .5s delay
 input.addEventListener('input', debounce(onInput, 500));
 
+// Remove dropdown when clicking outside of it
 document.addEventListener('click', (e) => {
 	if (!root.contains(e.target)) {
 		dropdown.classList.remove('is-active');
 	}
 });
+
+const onMovieSelect = async (movie) => {
+	const response = await axios.get('http://www.omdbapi.com/', {
+		params : {
+			apikey : '565268d9',
+			i      : movie.imdbID
+		}
+	});
+
+	console.log(response.data);
+};
