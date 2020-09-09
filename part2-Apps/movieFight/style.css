@@ -51,3 +51,8 @@ figure .image img {
 .container {
 	margin: 4rem;
 }
+
+.autos {
+	display: flex;
+	justify-content: space-between;
+}
