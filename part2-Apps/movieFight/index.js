@@ -31,12 +31,16 @@ const resultsWrap = document.querySelector('.results');
 const onInput = async (e) => {
 	const movies = await fetchData(e.target.value);
 
+	//clear previous results
+	resultsWrap.innerHTML = '';
+	//open dropdown and add search results
 	dropdown.classList.add('is-active');
 	for (let movie of movies) {
 		const option = document.createElement('a');
+		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 		option.classList.add('dropdown-item');
 		option.innerHTML = `
-			<img src="${movie.Poster}" class="poster">
+			<img src="${imgSrc}" class="poster">
 			${movie.Title}
 		`;
 
@@ -45,3 +49,5 @@ const onInput = async (e) => {
 };
 
 input.addEventListener('input', debounce(onInput, 500));
+
+document.addEventListener('click', (e) => {});
