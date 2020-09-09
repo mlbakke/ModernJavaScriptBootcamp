@@ -1,6 +1,4 @@
-// Create two autocomplete widgets, show results in dropdown
-createAutocomplete({
-	root           : document.querySelector('.autocomplete'),
+const autoCompleteConfig = {
 	renderOption(movie) {
 		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 		return `
@@ -28,6 +26,17 @@ createAutocomplete({
 
 		return response.data.Search;
 	}
+};
+
+// Create two autocomplete widgets, show results in dropdown
+createAutocomplete({
+	...autoCompleteConfig,
+	root : document.querySelector('#left-autocomplete')
+});
+
+createAutocomplete({
+	...autoCompleteConfig,
+	root : document.querySelector('#right-autocomplete')
 });
 
 // When a movie is selected from dropdown menu, show movie details
