@@ -75,12 +75,21 @@ const runComparison = () => {
 
 	leftStats.forEach((leftStat, index) => {
 		const rightStat = rightStats[index];
-		const leftValue = leftStat.dataset.value;
-		const rightValue = rightStat.dataset.value;
-		if (leftValue < rightValue) {
+		const leftValue = parseFloat(leftStat.dataset.value);
+		const rightValue = parseFloat(rightStat.dataset.value);
+		if (isNaN(leftValue) || isNaN(rightValue) || leftValue === rightValue) {
+			leftStat.classList.remove('is-primary');
+			leftStat.classList.remove('is-warning');
+			rightStat.classList.remove('is-primary');
+			rightStat.classList.remove('is-warning');
+		} else if (leftValue < rightValue) {
+			rightStat.classList.remove('is-warning');
+			rightStat.classList.add('is-primary');
 			leftStat.classList.remove('is-primary');
 			leftStat.classList.add('is-warning');
 		} else {
+			leftStat.classList.remove('is-warning');
+			leftStat.classList.add('is-primary');
 			rightStat.classList.remove('is-primary');
 			rightStat.classList.add('is-warning');
 		}
