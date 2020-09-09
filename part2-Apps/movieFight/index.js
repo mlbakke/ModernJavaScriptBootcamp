@@ -30,11 +30,21 @@ const resultsWrap = document.querySelector('.results');
 
 const onInput = async (e) => {
 	const movies = await fetchData(e.target.value);
-
+	//Remove dropdown when input is empty
+	if (e.target.value === '') {
+		dropdown.classList.remove('is-active');
+		return;
+	}
 	//clear previous results
 	resultsWrap.innerHTML = '';
 	//open dropdown and add search results
 	dropdown.classList.add('is-active');
+	//If no results
+	if (!movies.length) {
+		resultsWrap.innerHTML = 'Sorry, no results found.';
+		return;
+	}
+	//If results
 	for (let movie of movies) {
 		const option = document.createElement('a');
 		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
