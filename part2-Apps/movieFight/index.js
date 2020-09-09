@@ -6,9 +6,6 @@ const autoCompleteConfig = {
 			${movie.Title} (${movie.Year})
 		`;
 	},
-	onOptionSelect(movie) {
-		onMovieSelect(movie);
-	},
 	inputValue(movie) {
 		return movie.Title;
 	},
@@ -31,16 +28,24 @@ const autoCompleteConfig = {
 // Create two autocomplete widgets, show results in dropdown
 createAutocomplete({
 	...autoCompleteConfig,
-	root : document.querySelector('#left-autocomplete')
+	root           : document.querySelector('#left-autocomplete'),
+	onOptionSelect(movie) {
+		document.querySelector('.tutorial').classList.add('is-hidden');
+		onMovieSelect(movie, document.querySelector('#left-summary'));
+	}
 });
 
 createAutocomplete({
 	...autoCompleteConfig,
-	root : document.querySelector('#right-autocomplete')
+	root           : document.querySelector('#right-autocomplete'),
+	onOptionSelect(movie) {
+		document.querySelector('.tutorial').classList.add('is-hidden');
+		onMovieSelect(movie, document.querySelector('#right-summary'));
+	}
 });
 
 // When a movie is selected from dropdown menu, show movie details
-const onMovieSelect = async (movie) => {
+const onMovieSelect = async (movie, placement) => {
 	const response = await axios.get('http://www.omdbapi.com/', {
 		params : {
 			apikey : '565268d9',
@@ -48,7 +53,7 @@ const onMovieSelect = async (movie) => {
 		}
 	});
 
-	document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+	placement.innerHTML = movieTemplate(response.data);
 };
 
 const movieTemplate = (movieDetails) => {
