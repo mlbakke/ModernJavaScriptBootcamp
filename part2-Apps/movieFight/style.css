@@ -46,13 +46,3 @@ figure .image img {
 	height: 50px;
 	margin-right: 10px;
 }
-
-/* Added CSS*/
-.container {
-	margin: 4rem;
-}
-
-.autos {
-	display: flex;
-	justify-content: space-between;
-}
