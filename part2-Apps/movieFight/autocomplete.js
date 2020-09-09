@@ -1,6 +1,6 @@
-const createAutocomplete = ({ root, renderOption, onOptionSelect, inputValue }) => {
+const createAutocomplete = ({ root, renderOption, onOptionSelect, inputValue, fetchData }) => {
 	root.innerHTML = `
-        <label><b>Search for a Movie</b></label>
+        <label><b>Search</b></label>
         <input class="input">
         <div class="dropdown">
             <div class="dropdown-menu">
@@ -45,7 +45,7 @@ const createAutocomplete = ({ root, renderOption, onOptionSelect, inputValue }) 
 		}
 	};
 
-	// Search for movies on input, .5s delay
+	// Search for items on input, .5s delay
 	input.addEventListener('input', debounce(onInput, 500));
 
 	// Remove dropdown when clicking outside of it

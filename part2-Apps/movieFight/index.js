@@ -1,18 +1,3 @@
-const fetchData = async (searchTerm) => {
-	const response = await axios.get('http://www.omdbapi.com/', {
-		params : {
-			apikey : '565268d9',
-			s      : searchTerm
-		}
-	});
-
-	if (response.data.Error) {
-		return [];
-	}
-
-	return response.data.Search;
-};
-
 // Create two autocomplete widgets, show results in dropdown
 createAutocomplete({
 	root           : document.querySelector('.autocomplete'),
@@ -28,6 +13,20 @@ createAutocomplete({
 	},
 	inputValue(movie) {
 		return movie.Title;
+	},
+	async fetchData(searchTerm) {
+		const response = await axios.get('http://www.omdbapi.com/', {
+			params : {
+				apikey : '565268d9',
+				s      : searchTerm
+			}
+		});
+
+		if (response.data.Error) {
+			return [];
+		}
+
+		return response.data.Search;
 	}
 });
 
