@@ -15,24 +15,19 @@ const fetchData = async (searchTerm) => {
 
 // Create two autocomplete widgets, show results in dropdown
 createAutocomplete({
-	root         : document.querySelector('.autocomplete'),
+	root           : document.querySelector('.autocomplete'),
 	renderOption(movie) {
 		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 		return `
 			<img src="${imgSrc}">
 			${movie.Title} (${movie.Year})
 		`;
-	}
-});
-
-createAutocomplete({
-	root         : document.querySelector('.autocomplete-2'),
-	renderOption(movie) {
-		const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
-		return `
-			<img src="${imgSrc}">
-			${movie.Title}
-		`;
+	},
+	onOptionSelect(movie) {
+		onMovieSelect(movie);
+	},
+	inputValue(movie) {
+		return movie.Title;
 	}
 });
 
