@@ -72,10 +72,10 @@ const switchCell = (row, column) => {
 
 	//Create array of neighbours and randomize order
 	const neighbours = shuffle([
-		[ row - 1, column, 'up' ]
-		// [ row, column + 1, 'right' ],
-		// [ row + 1, column, 'down' ],
-		// [ row, column - 1, 'left' ]
+		[ row - 1, column, 'up' ],
+		[ row, column + 1, 'right' ],
+		[ row + 1, column, 'down' ],
+		[ row, column - 1, 'left' ]
 	]);
 
 	// For each neighbour:
@@ -102,8 +102,10 @@ const switchCell = (row, column) => {
 		else if (direction === 'down') {
 			horizontals[row][column] = true;
 		}
+
+		//Go to next cell
+		switchCell(nextRow, nextColumn);
 	}
-	//Go to next cell
 };
 
-switchCell(1, 1);
+switchCell(startRow, startCol);
