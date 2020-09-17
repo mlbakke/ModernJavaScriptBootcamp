@@ -37,7 +37,21 @@ const walls = [
 ];
 World.add(world, walls);
 
-// Maze generation
+// MAZE GENERATION
+const shuffle = (arr) => {
+	let counter = arr.length;
+	while (counter > 0) {
+		const idx = Math.floor(Math.random() * counter);
+		counter--;
+		//Swap elements
+		const temp = arr[counter];
+		arr[counter] = arr[idx];
+		arr[idx] = temp;
+	}
+
+	return arr;
+};
+
 // Create grid
 const grid = Array(gridRows).fill(null).map(() => Array(gridCols).fill(false));
 // Vertical & horizontal grid lines
@@ -49,14 +63,47 @@ const startRow = Math.floor(Math.random() * gridRows);
 const startCol = Math.floor(Math.random() * gridCols);
 //Go from one cell to a neighbour in maze-generation algorithm
 const switchCell = (row, column) => {
-	// If I have visted the cell at [row, column], return
+	// If current cell is visited(true), return
+	if (grid[row][column]) {
+		return;
+	}
 	// Mark cell as visited
-	// Assemble randomly-ordered list of neighbours
+	grid[row][column] = true;
+
+	//Create array of neighbours and randomize order
+	const neighbours = shuffle([
+		[ row - 1, column, 'up' ]
+		// [ row, column + 1, 'right' ],
+		// [ row + 1, column, 'down' ],
+		// [ row, column - 1, 'left' ]
+	]);
+
 	// For each neighbour:
-	// -See if neighbour is out of bounds
-	// -See if neighbour is visited, is so continue to next neighbour
-	//Remove a wall from either horizontals or verticals
-	//Go to cell
+	for (let neighbour of neighbours) {
+		const [ nextRow, nextColumn, direction ] = neighbour;
+		// -See if neighbour is out of bounds
+		if (nextRow < 0 || nextRow >= gridRows || nextColumn < 0 || nextColumn >= gridCols) {
+			continue;
+		}
+		// -If neighbour is visited, continue to check next neighbour
+		if (grid[nextRow][nextColumn]) {
+			continue;
+		}
+		// -Remove a wall from either horizontals or verticals
+		if (direction === 'left') {
+			verticals[row][column - 1] = true;
+		}
+		else if (direction === 'right') {
+			verticals[row][column] = true;
+		}
+		else if (direction === 'up') {
+			horizontals[row - 1][column] = true;
+		}
+		else if (direction === 'down') {
+			horizontals[row][column] = true;
+		}
+	}
+	//Go to next cell
 };
 
-switchCell(startRow, startCol);
+switchCell(1, 1);
