@@ -31,7 +31,7 @@ World.add(
 	})
 );
 
-// Borders
+// BORDERS
 const walls = [
 	Bodies.rectangle(width / 2, 0, width, 25, { isStatic: true }),
 	Bodies.rectangle(width / 2, height, width, 25, { isStatic: true }),
@@ -113,7 +113,8 @@ const switchCell = (row, column) => {
 
 switchCell(startRow, startCol);
 
-// Draw maze to canvas
+// DRAW MAZE
+// Horizontal lines
 horizontals.forEach((row, rowIndex) => {
 	row.forEach((open, columnIndex) => {
 		if (open === true) {
@@ -133,6 +134,7 @@ horizontals.forEach((row, rowIndex) => {
 	});
 });
 
+// Vertical lines
 verticals.forEach((row, rowIndex) => {
 	row.forEach((open, columnIndex) => {
 		if (open === true) {
@@ -151,3 +153,5 @@ verticals.forEach((row, rowIndex) => {
 		World.add(world, wall);
 	});
 });
+
+// DRAW GOAL
