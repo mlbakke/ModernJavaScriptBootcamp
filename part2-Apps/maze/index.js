@@ -6,6 +6,9 @@ const height = 600;
 const gridCols = 3; //number of columns in maze-grid
 const gridRows = 3; //number of rows in maze-grid
 
+const unitLength = width / gridCols;
+const unitHeight = height / gridRows;
+
 const engine = Engine.create();
 const { world } = engine;
 const render = Render.create({
@@ -109,3 +112,42 @@ const switchCell = (row, column) => {
 };
 
 switchCell(startRow, startCol);
+
+// Draw maze to canvas
+horizontals.forEach((row, rowIndex) => {
+	row.forEach((open, columnIndex) => {
+		if (open === true) {
+			return;
+		}
+		const wall = Bodies.rectangle(
+			columnIndex * unitLength + unitLength / 2,
+			rowIndex * unitHeight + unitHeight,
+			unitLength,
+			2,
+			{
+				isStatic : true
+			}
+		);
+
+		World.add(world, wall);
+	});
+});
+
+verticals.forEach((row, rowIndex) => {
+	row.forEach((open, columnIndex) => {
+		if (open === true) {
+			return;
+		}
+		const wall = Bodies.rectangle(
+			columnIndex * unitLength + unitLength,
+			rowIndex * unitHeight + unitHeight / 2,
+			2,
+			unitHeight,
+			{
+				isStatic : true
+			}
+		);
+
+		World.add(world, wall);
+	});
+});
