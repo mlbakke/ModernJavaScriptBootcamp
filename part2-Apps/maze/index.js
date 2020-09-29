@@ -8,6 +8,7 @@ const gridRows = 3; //number of rows in maze-grid
 
 const unitLength = width / gridCols;
 const unitHeight = height / gridRows;
+const wallThickness = 1;
 
 const engine = Engine.create();
 const { world } = engine;
@@ -124,7 +125,7 @@ horizontals.forEach((row, rowIndex) => {
 			columnIndex * unitLength + unitLength / 2,
 			rowIndex * unitHeight + unitHeight,
 			unitLength,
-			2,
+			wallThickness,
 			{
 				isStatic : true
 			}
@@ -143,7 +144,7 @@ verticals.forEach((row, rowIndex) => {
 		const wall = Bodies.rectangle(
 			columnIndex * unitLength + unitLength,
 			rowIndex * unitHeight + unitHeight / 2,
-			2,
+			wallThickness,
 			unitHeight,
 			{
 				isStatic : true
@@ -155,3 +156,14 @@ verticals.forEach((row, rowIndex) => {
 });
 
 // DRAW GOAL
+const goal = Bodies.rectangle(
+	width - unitLength / 2,
+	height - unitHeight / 2,
+	unitLength * 0.7,
+	unitHeight * 0.7,
+	{
+		isStatic : true
+	}
+);
+
+World.add(world, goal);
