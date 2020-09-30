@@ -14,9 +14,31 @@
             height: 100%;
             margin: 0;
         }
+
+        h1 {
+            color: white;
+            font-size: 5rem;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        .winner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            z-index: 1;
+            height : 100vh;
+            width: 100vw;
+        }
     </style>
 </head>
 <body>
+    <div class="winner hidden">
+        <h1>You Win!</h1>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>
