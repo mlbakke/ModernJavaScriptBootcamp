@@ -220,4 +220,6 @@ function winAnimation() {
             Body.setStatic(body, false);
         }
     })
+    
+    document.querySelector('.winner').classList.remove('hidden');
 }
