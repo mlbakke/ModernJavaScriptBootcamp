@@ -204,5 +204,3 @@ Events.on(engine, 'collisionStart', (e) => {
 		}
 	});
 });
-
-//bodyB id: 88 bodyA.id:87
