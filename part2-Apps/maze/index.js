@@ -3,7 +3,7 @@ const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse, Body, Eve
 const width = 600;
 const height = 600;
 
-const gridCols = 8; //number of columns in maze-grid
+const gridCols = 6; //number of columns in maze-grid
 const gridRows = 6; //number of rows in maze-grid
 
 const unitLength = width / gridCols;
@@ -62,7 +62,6 @@ const grid = Array(gridRows).fill(null).map(() => Array(gridCols).fill(false));
 // Vertical & horizontal grid lines
 const verticals = Array(gridRows).fill(null).map(() => Array(gridCols - 1).fill(false));
 const horizontals = Array(gridRows - 1).fill(null).map(() => Array(gridCols).fill(false));
-
 //Starting place for deleting walls in maze-generation algorithm
 const startRow = Math.floor(Math.random() * gridRows);
 const startCol = Math.floor(Math.random() * gridCols);
@@ -112,10 +111,10 @@ const switchCell = (row, column) => {
 		switchCell(nextRow, nextColumn);
 	}
 };
-
 switchCell(startRow, startCol);
 
 // DRAW MAZE
+
 // Horizontal lines
 horizontals.forEach((row, rowIndex) => {
 	row.forEach((open, columnIndex) => {
@@ -181,18 +180,19 @@ World.add(world, ball);
 
 // User controlled movement
 document.addEventListener('keydown', (e) => {
-	const { x, y } = ball.velocity;
+    const { x, y } = ball.velocity;
+    const maxVelocity = 15;
 	if (e.keyCode === 87) {
-		Body.setVelocity(ball, { x, y: y - 5 });
+		Body.setVelocity(ball, { x, y: Math.max(y - 5, -maxVelocity) });
 	}
 	if (e.keyCode === 68) {
-		Body.setVelocity(ball, { x: x + 5, y });
+		Body.setVelocity(ball, { x: Math.min(x + 5, maxVelocity), y });
 	}
 	if (e.keyCode === 83) {
-		Body.setVelocity(ball, { x, y: y + 5 });
+		Body.setVelocity(ball, { x, y: Math.min(y + 5, maxVelocity) });
 	}
 	if (e.keyCode === 65) {
-		Body.setVelocity(ball, { x: x - 5, y });
+		Body.setVelocity(ball, { x: Math.max(x - 5, -maxVelocity), y });
 	}
 });
 
