@@ -1,4 +1,4 @@
-const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse } = Matter;
+const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse, Body, Events } = Matter;
 
 const width = 600;
 const height = 600;
@@ -11,6 +11,7 @@ const unitHeight = height / gridRows;
 const wallThickness = 1;
 
 const engine = Engine.create();
+engine.world.gravity.y = 0;
 const { world } = engine;
 const render = Render.create({
 	element : document.body,
@@ -162,6 +163,7 @@ const goal = Bodies.rectangle(
 	unitLength * 0.7,
 	unitHeight * 0.7,
 	{
+		label    : 'goal',
 		isStatic : true
 	}
 );
@@ -169,5 +171,38 @@ const goal = Bodies.rectangle(
 World.add(world, goal);
 
 // BALL
-const ball = Bodies.circle(unitLength / 2, unitHeight / 2, (unitLength + unitHeight) / 8);
+// Draw
+const ball = Bodies.circle(unitLength / 2, unitHeight / 2, (unitLength + unitHeight) / 8, {
+	label : 'ball'
+});
 World.add(world, ball);
+
+// User controlled movement
+document.addEventListener('keydown', (e) => {
+	const { x, y } = ball.velocity;
+	if (e.keyCode === 87) {
+		Body.setVelocity(ball, { x, y: y - 5 });
+	}
+	if (e.keyCode === 68) {
+		Body.setVelocity(ball, { x: x + 5, y });
+	}
+	if (e.keyCode === 83) {
+		Body.setVelocity(ball, { x, y: y + 5 });
+	}
+	if (e.keyCode === 65) {
+		Body.setVelocity(ball, { x: x - 5, y });
+	}
+});
+
+// WIN CONDITION
+Events.on(engine, 'collisionStart', (e) => {
+	e.pairs.forEach((collision) => {
+		const labels = [ 'ball', 'goal' ];
+
+		if (labels.includes(collision.bodyA.label) && labels.includes(collision.bodyB.label)) {
+			console.log('User won!');
+		}
+	});
+});
+
+//bodyB id: 88 bodyA.id:87
