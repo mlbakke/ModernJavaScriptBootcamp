@@ -1,10 +1,9 @@
-const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse, Body, Events } = Matter;
+const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
 
-const width = 600;
-const height = 600;
-
-const gridCols = 6; //number of columns in maze-grid
-const gridRows = 6; //number of rows in maze-grid
+const width = window.innerWidth;
+const height = window.innerHeight;
+const gridCols = 12; //number of columns in maze-grid
+const gridRows = 10; //number of rows in maze-grid
 
 const unitLength = width / gridCols;
 const unitHeight = height / gridRows;
@@ -26,19 +25,12 @@ const render = Render.create({
 Render.run(render);
 Runner.run(Runner.create(), engine);
 
-World.add(
-	world,
-	MouseConstraint.create(engine, {
-		mouse : Mouse.create(render.canvas)
-	})
-);
-
 // BORDERS
 const walls = [
-	Bodies.rectangle(width / 2, 0, width, 25, { isStatic: true }),
-	Bodies.rectangle(width / 2, height, width, 25, { isStatic: true }),
-	Bodies.rectangle(0, height / 2, 25, height, { isStatic: true }),
-	Bodies.rectangle(width, height / 2, 25, height, { isStatic: true })
+	Bodies.rectangle(width / 2, 0, width, 2, { isStatic: true }),
+	Bodies.rectangle(width / 2, height, width, 2, { isStatic: true }),
+	Bodies.rectangle(0, height / 2, 2, height, { isStatic: true }),
+	Bodies.rectangle(width, height / 2, 2, height, { isStatic: true })
 ];
 World.add(world, walls);
 
@@ -173,7 +165,8 @@ World.add(world, goal);
 
 // BALL
 // Draw
-const ball = Bodies.circle(unitLength / 2, unitHeight / 2, (unitLength + unitHeight) / 8, {
+const ballRadius = Math.min(unitLength, unitHeight) / 4;
+const ball = Bodies.circle(unitLength / 2, unitHeight / 2, ballRadius, {
 	label : 'ball'
 });
 World.add(world, ball);
