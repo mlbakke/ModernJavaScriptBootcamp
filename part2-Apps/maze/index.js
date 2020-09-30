@@ -3,8 +3,8 @@ const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse, Body, Eve
 const width = 600;
 const height = 600;
 
-const gridCols = 3; //number of columns in maze-grid
-const gridRows = 3; //number of rows in maze-grid
+const gridCols = 8; //number of columns in maze-grid
+const gridRows = 6; //number of rows in maze-grid
 
 const unitLength = width / gridCols;
 const unitHeight = height / gridRows;
@@ -128,6 +128,7 @@ horizontals.forEach((row, rowIndex) => {
 			unitLength,
 			wallThickness,
 			{
+                label : 'wall',
 				isStatic : true
 			}
 		);
@@ -148,6 +149,7 @@ verticals.forEach((row, rowIndex) => {
 			wallThickness,
 			unitHeight,
 			{
+                label : 'wall',
 				isStatic : true
 			}
 		);
@@ -200,7 +202,17 @@ Events.on(engine, 'collisionStart', (e) => {
 		const labels = [ 'ball', 'goal' ];
 
 		if (labels.includes(collision.bodyA.label) && labels.includes(collision.bodyB.label)) {
-			console.log('User won!');
+			winAnimation();
 		}
 	});
 });
+
+// WIN ANIMATION
+function winAnimation() {
+    world.gravity.y = 1;
+    world.bodies.forEach ((body) => {
+        if (body.label === 'wall') {
+            Body.setStatic(body, false);
+        }
+    })
+}
