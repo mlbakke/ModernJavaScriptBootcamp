@@ -1,10 +1,9 @@
-const { Engine, Render, Runner, World, Bodies, MouseConstraint, Mouse, Body, Events } = Matter;
+const { Engine, Render, Runner, World, Bodies, Body, Events } = Matter;
 
-const width = 600;
-const height = 600;
-
-const gridCols = 3; //number of columns in maze-grid
-const gridRows = 3; //number of rows in maze-grid
+const width = window.innerWidth;
+const height = window.innerHeight;
+const gridCols = 12; //number of columns in maze-grid
+const gridRows = 10; //number of rows in maze-grid
 
 const unitLength = width / gridCols;
 const unitHeight = height / gridRows;
@@ -17,7 +16,7 @@ const render = Render.create({
 	element : document.body,
 	engine  : engine,
 	options : {
-		wireframes : true,
+		wireframes : false,
 		width      : width,
 		height     : height
 	}
@@ -26,19 +25,12 @@ const render = Render.create({
 Render.run(render);
 Runner.run(Runner.create(), engine);
 
-World.add(
-	world,
-	MouseConstraint.create(engine, {
-		mouse : Mouse.create(render.canvas)
-	})
-);
-
 // BORDERS
 const walls = [
-	Bodies.rectangle(width / 2, 0, width, 25, { isStatic: true }),
-	Bodies.rectangle(width / 2, height, width, 25, { isStatic: true }),
-	Bodies.rectangle(0, height / 2, 25, height, { isStatic: true }),
-	Bodies.rectangle(width, height / 2, 25, height, { isStatic: true })
+	Bodies.rectangle(width / 2, 0, width, 2, { isStatic: true }),
+	Bodies.rectangle(width / 2, height, width, 2, { isStatic: true }),
+	Bodies.rectangle(0, height / 2, 2, height, { isStatic: true }),
+	Bodies.rectangle(width, height / 2, 2, height, { isStatic: true })
 ];
 World.add(world, walls);
 
@@ -62,7 +54,6 @@ const grid = Array(gridRows).fill(null).map(() => Array(gridCols).fill(false));
 // Vertical & horizontal grid lines
 const verticals = Array(gridRows).fill(null).map(() => Array(gridCols - 1).fill(false));
 const horizontals = Array(gridRows - 1).fill(null).map(() => Array(gridCols).fill(false));
-
 //Starting place for deleting walls in maze-generation algorithm
 const startRow = Math.floor(Math.random() * gridRows);
 const startCol = Math.floor(Math.random() * gridCols);
@@ -112,10 +103,10 @@ const switchCell = (row, column) => {
 		switchCell(nextRow, nextColumn);
 	}
 };
-
 switchCell(startRow, startCol);
 
 // DRAW MAZE
+
 // Horizontal lines
 horizontals.forEach((row, rowIndex) => {
 	row.forEach((open, columnIndex) => {
@@ -128,7 +119,11 @@ horizontals.forEach((row, rowIndex) => {
 			unitLength,
 			wallThickness,
 			{
-				isStatic : true
+                label : 'wall',
+                isStatic : true,
+                render : {
+                    fillStyle : '#DCCCFF'
+                }
 			}
 		);
 
@@ -148,7 +143,11 @@ verticals.forEach((row, rowIndex) => {
 			wallThickness,
 			unitHeight,
 			{
-				isStatic : true
+                label : 'wall',
+				isStatic : true,
+                render : {
+                    fillStyle : '#DCCCFF'
+                }
 			}
 		);
 
@@ -164,7 +163,10 @@ const goal = Bodies.rectangle(
 	unitHeight * 0.7,
 	{
 		label    : 'goal',
-		isStatic : true
+		isStatic : true,
+        render : {
+            fillStyle : '#B80C09'
+        }
 	}
 );
 
@@ -172,25 +174,30 @@ World.add(world, goal);
 
 // BALL
 // Draw
-const ball = Bodies.circle(unitLength / 2, unitHeight / 2, (unitLength + unitHeight) / 8, {
-	label : 'ball'
+const ballRadius = Math.min(unitLength, unitHeight) / 4;
+const ball = Bodies.circle(unitLength / 2, unitHeight / 2, ballRadius, {
+	label : 'ball',
+    render : {
+        fillStyle : '#F6AA1C'
+    }
 });
 World.add(world, ball);
 
 // User controlled movement
 document.addEventListener('keydown', (e) => {
-	const { x, y } = ball.velocity;
+    const { x, y } = ball.velocity;
+    const maxVelocity = 15;
 	if (e.keyCode === 87) {
-		Body.setVelocity(ball, { x, y: y - 5 });
+		Body.setVelocity(ball, { x, y: Math.max(y - 5, -maxVelocity) });
 	}
 	if (e.keyCode === 68) {
-		Body.setVelocity(ball, { x: x + 5, y });
+		Body.setVelocity(ball, { x: Math.min(x + 5, maxVelocity), y });
 	}
 	if (e.keyCode === 83) {
-		Body.setVelocity(ball, { x, y: y + 5 });
+		Body.setVelocity(ball, { x, y: Math.min(y + 5, maxVelocity) });
 	}
 	if (e.keyCode === 65) {
-		Body.setVelocity(ball, { x: x - 5, y });
+		Body.setVelocity(ball, { x: Math.max(x - 5, -maxVelocity), y });
 	}
 });
 
@@ -200,7 +207,19 @@ Events.on(engine, 'collisionStart', (e) => {
 		const labels = [ 'ball', 'goal' ];
 
 		if (labels.includes(collision.bodyA.label) && labels.includes(collision.bodyB.label)) {
-			console.log('User won!');
+			winAnimation();
 		}
 	});
 });
+
+// WIN ANIMATION
+function winAnimation() {
+    world.gravity.y = 1;
+    world.bodies.forEach ((body) => {
+        if (body.label === 'wall') {
+            Body.setStatic(body, false);
+        }
+    })
+    
+    document.querySelector('.winner').classList.remove('hidden');
+}

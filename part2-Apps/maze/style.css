@@ -1,0 +1,24 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+h1 {
+    color: white;
+    font-size: 5rem;
+}
+        
+.hidden {
+    display: none !important;
+}
+
+.winner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    height : 100vh;
+    width: 100vw;
+}
